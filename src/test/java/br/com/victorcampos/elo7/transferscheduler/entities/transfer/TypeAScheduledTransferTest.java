@@ -15,7 +15,7 @@ public class TypeAScheduledTransferTest {
 
     @Test
     public void testCalculateFee() {
-	int expectedFee = (int) (10000 * 0.03) + 2;
+	int expectedFee = 500;
 	ScheduledTransfer typeAScheduledTransfer = new TypeAScheduledTransfer();
 	
 	// set transfer amount to $100.00
