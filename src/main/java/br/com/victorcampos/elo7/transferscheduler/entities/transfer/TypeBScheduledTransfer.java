@@ -1,7 +1,10 @@
 package br.com.victorcampos.elo7.transferscheduler.entities.transfer;
 
+import br.com.victorcampos.elo7.transferscheduler.calculator.FeeCalculable;
+import br.com.victorcampos.elo7.transferscheduler.calculator.TypeBFeeCalculator;
+
 public class TypeBScheduledTransfer extends ScheduledTransfer {
-    
+
     private static String TYPE = "B";
 
     @Override
@@ -11,10 +14,10 @@ public class TypeBScheduledTransfer extends ScheduledTransfer {
 
     @Override
     public int calculateFee() {
-	if (getScheduledDate().isAfter(getCreatedDate().plusDays(30)))
-	    return 800;
-	else
-	    return 1000;
+	FeeCalculable typeBFeeCalculator = new TypeBFeeCalculator(
+		getTransferAmount(), getCreatedDate(), getScheduledDate());
+
+	return typeBFeeCalculator.calculateFee();
     }
 
 }
