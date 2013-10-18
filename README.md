@@ -33,3 +33,8 @@ Requirements
 			* Transfer amount between $25,001 and $120,000 = type B fee
 			* Transfer amount greater than $120,000 = type C fee
 2. The user may see every scheduled transfer inputed
+
+Design decisions
+----------------
+
+Transfer amount is set as an integer with 10e-3 precision to handle integer conversions from double when using percentages.

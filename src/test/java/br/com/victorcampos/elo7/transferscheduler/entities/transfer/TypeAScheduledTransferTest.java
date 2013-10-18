@@ -15,11 +15,11 @@ public class TypeAScheduledTransferTest {
 
     @Test
     public void testCalculateFee() {
-	int expectedFee = 500;
+	int expectedFee = 5000;
 	ScheduledTransfer typeAScheduledTransfer = new TypeAScheduledTransfer();
 	
 	// set transfer amount to $100.00
-	typeAScheduledTransfer.setTransferAmount(10000);
+	typeAScheduledTransfer.setTransferAmount(100000);
 	int calculatedFee = typeAScheduledTransfer.calculateFee();
 	
 	assertEquals(expectedFee, calculatedFee);
@@ -27,11 +27,11 @@ public class TypeAScheduledTransferTest {
     
     @Test
     public void testCalculateFeeForALargerAmount() {
-	int expectedFee = 300200;
+	int expectedFee = 3002000;
 	ScheduledTransfer typeAScheduledTransfer = new TypeAScheduledTransfer();
 	
 	// set transfer amount to $100000.00
-	typeAScheduledTransfer.setTransferAmount(10000000);
+	typeAScheduledTransfer.setTransferAmount(100000000);
 	int calculatedFee = typeAScheduledTransfer.calculateFee();
 	
 	assertEquals(expectedFee, calculatedFee);
@@ -39,11 +39,11 @@ public class TypeAScheduledTransferTest {
     
     @Test
     public void testCalculateFeeForASmallAmount() {
-	int expectedFee = 200;
+	int expectedFee = 2000;
 	ScheduledTransfer typeAScheduledTransfer = new TypeAScheduledTransfer();
 	
 	// set transfer amount to $0.01
-	typeAScheduledTransfer.setTransferAmount(1);
+	typeAScheduledTransfer.setTransferAmount(10);
 	int calculatedFee = typeAScheduledTransfer.calculateFee();
 	
 	assertEquals(expectedFee, calculatedFee);

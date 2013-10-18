@@ -14,7 +14,7 @@ public class TypeAScheduledTransfer extends ScheduledTransfer {
 	// TODO: rounding errors on int casting will be a problem?
 	// TODO: should the fee for 0.01 add at least another 0.01 or does it
 	// round it down?
-	int calculatedFee = (int) (getTransferAmount() * 0.03) + 200;
+	int calculatedFee = (int) (getTransferAmount() * 0.03) + 2000;
 
 	return calculatedFee;
     }
