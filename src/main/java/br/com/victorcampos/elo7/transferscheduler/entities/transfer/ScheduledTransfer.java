@@ -1,7 +1,6 @@
 package br.com.victorcampos.elo7.transferscheduler.entities.transfer;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
 import br.com.victorcampos.elo7.transferscheduler.entities.Account;
@@ -79,8 +78,7 @@ public abstract class ScheduledTransfer {
 
     private boolean isValidPeriodBetweenCreatedAndScheduledDates(
 	    DateTime createdDate, DateTime scheduledDate) {
-	Period period = new Period(createdDate, scheduledDate);
-	if (period.toStandardDuration().getMillis() < 0)
+	if (createdDate.compareTo(scheduledDate) > 0)
 	    return false;
 
 	return true;
