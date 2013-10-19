@@ -3,7 +3,7 @@ package br.com.victorcampos.elo7.transferscheduler.entities.transfer;
 import org.joda.time.DateTime;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
-import br.com.victorcampos.elo7.transferscheduler.helpers.AccountFormatValidator;
+import br.com.victorcampos.elo7.transferscheduler.helpers.ScheduledTransferValidator;
 
 public abstract class ScheduledTransfer {
 
@@ -44,7 +44,7 @@ public abstract class ScheduledTransfer {
 
     public void setOriginAccount(String originAccount)
 	    throws InvalidArgumentException {
-	if (AccountFormatValidator.isValidFormat(originAccount)) {
+	if (ScheduledTransferValidator.isValidFormat(originAccount)) {
 	    this.originAccount = originAccount;
 	} else {
 	    throw new InvalidArgumentException();
@@ -57,7 +57,7 @@ public abstract class ScheduledTransfer {
 
     public void setDestinationAccount(String destinationAccount)
 	    throws InvalidArgumentException {
-	if (AccountFormatValidator.isValidFormat(destinationAccount)) {
+	if (ScheduledTransferValidator.isValidFormat(destinationAccount)) {
 	    this.destinationAccount = destinationAccount;
 	} else {
 	    throw new InvalidArgumentException();
@@ -79,7 +79,7 @@ public abstract class ScheduledTransfer {
     public void setCreatedDate(DateTime createdDate)
 	    throws InvalidArgumentException {
 	if (getScheduledDate() != null && createdDate != null) {
-	    if (!isValidPeriodBetweenCreatedAndScheduledDates(createdDate,
+	    if (!ScheduledTransferValidator.isValidPeriodBetweenCreatedAndScheduledDates(createdDate,
 		    getScheduledDate()))
 		throw new InvalidArgumentException();
 
@@ -96,7 +96,7 @@ public abstract class ScheduledTransfer {
     public void setScheduledDate(DateTime scheduledDate)
 	    throws InvalidArgumentException {
 	if (getCreatedDate() != null && scheduledDate != null) {
-	    if (!isValidPeriodBetweenCreatedAndScheduledDates(getCreatedDate(),
+	    if (!ScheduledTransferValidator.isValidPeriodBetweenCreatedAndScheduledDates(getCreatedDate(),
 		    scheduledDate))
 		throw new InvalidArgumentException();
 
@@ -104,14 +104,6 @@ public abstract class ScheduledTransfer {
 	} else if (scheduledDate != null) {
 	    this.scheduledDate = scheduledDate;
 	}
-    }
-
-    private boolean isValidPeriodBetweenCreatedAndScheduledDates(
-	    DateTime createdDate, DateTime scheduledDate) {
-	if (createdDate.compareTo(scheduledDate) > 0)
-	    return false;
-
-	return true;
     }
 
     public int getFee() {

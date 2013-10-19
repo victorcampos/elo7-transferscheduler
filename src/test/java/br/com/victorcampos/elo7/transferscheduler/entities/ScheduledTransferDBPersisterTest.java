@@ -28,8 +28,12 @@ public class ScheduledTransferDBPersisterTest {
 	ScheduledTransfer scheduledTransfer = new TypeAScheduledTransfer(
 		"12345-6", "12345-6", 0, now, scheduledDate);
 
-	String uuid = persister.save(scheduledTransfer);
-	assertEquals(scheduledTransfer, persister.get(uuid));
+	assertNull(scheduledTransfer.getUuid());
+
+	scheduledTransfer = persister.save(scheduledTransfer);
+	assertNotNull(scheduledTransfer.getUuid());
+	assertEquals(scheduledTransfer,
+		persister.get(scheduledTransfer.getUuid()));
     }
 
     @Test
@@ -43,7 +47,7 @@ public class ScheduledTransferDBPersisterTest {
 	ScheduledTransfer scheduledTransfer = new TypeAScheduledTransfer(
 		"12345-6", "12345-6", 0, now, scheduledDate);
 
-	String uuid = persister.save(scheduledTransfer);
+	String uuid = persister.save(scheduledTransfer).getUuid();
 	assertEquals(scheduledTransfer, persister.get(uuid));
     }
 
@@ -65,9 +69,9 @@ public class ScheduledTransferDBPersisterTest {
 	persister.save(scheduledTransfer);
 	persister.save(typeBScheduledTransfer);
 	persister.save(typeCScheduledTransfer);
-	
+
 	Collection<ScheduledTransfer> list = persister.list();
-	
+
 	assertEquals(3, list.size());
     }
 

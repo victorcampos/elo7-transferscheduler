@@ -16,7 +16,7 @@ public class ScheduledTransferDBPersister {
 	this.database = database;
     }
 
-    public String save(ScheduledTransfer transfer) {
+    public ScheduledTransfer save(ScheduledTransfer transfer) {
 	Map<String, ScheduledTransfer> dbMap = database
 		.getTreeMap("scheduled_transfers");
 
@@ -28,7 +28,7 @@ public class ScheduledTransferDBPersister {
 
 	dbMap.put(uuid, transfer);
 
-	return uuid;
+	return transfer;
     }
 
     public ScheduledTransfer get(String uuid) {
