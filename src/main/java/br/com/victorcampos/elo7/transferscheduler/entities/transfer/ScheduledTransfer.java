@@ -3,12 +3,12 @@ package br.com.victorcampos.elo7.transferscheduler.entities.transfer;
 import org.joda.time.DateTime;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
-import br.com.victorcampos.elo7.transferscheduler.entities.Account;
+import br.com.victorcampos.elo7.transferscheduler.helpers.AccountFormatValidator;
 
 public abstract class ScheduledTransfer {
 
-    private Account originAccount;
-    private Account destinationAccount;
+    private String originAccount;
+    private String destinationAccount;
     private int transferAmount;
     private DateTime createdDate;
     private DateTime scheduledDate;
@@ -18,20 +18,41 @@ public abstract class ScheduledTransfer {
 
     public abstract int calculateFee();
 
-    public Account getOriginAccount() {
+    public ScheduledTransfer(String originAccount, String destinationAccount,
+	    int transferAmount, DateTime createdDate, DateTime scheduledDate) throws InvalidArgumentException {
+	setOriginAccount(originAccount);
+	setDestinationAccount(destinationAccount);
+	
+	this.transferAmount = transferAmount;
+	
+	setCreatedDate(createdDate);
+	setScheduledDate(scheduledDate);
+    }
+
+    public String getOriginAccount() {
 	return originAccount;
     }
 
-    public void setOriginAccount(Account originAccount) {
-	this.originAccount = originAccount;
+    public void setOriginAccount(String originAccount)
+	    throws InvalidArgumentException {
+	if (AccountFormatValidator.isValidFormat(originAccount)) {
+	    this.originAccount = originAccount;
+	} else {
+	    throw new InvalidArgumentException();
+	}
     }
 
-    public Account getDestinationAccount() {
+    public String getDestinationAccount() {
 	return destinationAccount;
     }
 
-    public void setDestinationAccount(Account destinationAccount) {
-	this.destinationAccount = destinationAccount;
+    public void setDestinationAccount(String destinationAccount)
+	    throws InvalidArgumentException {
+	if (AccountFormatValidator.isValidFormat(destinationAccount)) {
+	    this.destinationAccount = destinationAccount;
+	} else {
+	    throw new InvalidArgumentException();
+	}
     }
 
     public int getTransferAmount() {

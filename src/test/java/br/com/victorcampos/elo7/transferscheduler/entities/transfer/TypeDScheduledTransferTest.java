@@ -10,18 +10,23 @@ import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
 public class TypeDScheduledTransferTest {
 
     @Test
-    public void testGetType() {
-	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer();
+    public void testGetType() throws InvalidArgumentException {
+	DateTime now = new DateTime();
+	DateTime scheduledDate = now.plusDays(1);
+	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
+		"12345-6", "12345-6", 0, now, scheduledDate);
 
 	assertEquals("D", typeDScheduledTransfer.getType());
     }
 
     @Test
-    public void testTypeAFeeCase() {
+    public void testTypeAFeeCase() throws InvalidArgumentException {
 	int expectedFee = 5000;
 
-	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer();
-	typeDScheduledTransfer.setTransferAmount(100000);
+	DateTime now = new DateTime();
+	DateTime scheduledDate = now.plusDays(1);
+	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
+		"12345-6", "12345-6", 100000, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -32,11 +37,9 @@ public class TypeDScheduledTransferTest {
 	int expectedFee = 10000;
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(15);
-
-	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer();
-	typeDScheduledTransfer.setTransferAmount(25000010);
-	typeDScheduledTransfer.setCreatedDate(now);
-	typeDScheduledTransfer.setScheduledDate(scheduledDate);
+	
+	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
+		"12345-6", "12345-6", 25000010, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -48,10 +51,8 @@ public class TypeDScheduledTransferTest {
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(31);
 
-	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer();
-	typeDScheduledTransfer.setTransferAmount(25000010);
-	typeDScheduledTransfer.setCreatedDate(now);
-	typeDScheduledTransfer.setScheduledDate(scheduledDate);
+	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
+		"12345-6", "12345-6", 25000010, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -62,11 +63,9 @@ public class TypeDScheduledTransferTest {
 	int expectedFee = 5160043;
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(21);
-
-	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer();
-	typeDScheduledTransfer.setTransferAmount(120001000);
-	typeDScheduledTransfer.setCreatedDate(now);
-	typeDScheduledTransfer.setScheduledDate(scheduledDate);
+	
+	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
+		"12345-6", "12345-6", 120001000, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -78,10 +77,8 @@ public class TypeDScheduledTransferTest {
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(15);
 
-	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer();
-	typeDScheduledTransfer.setTransferAmount(120001000);
-	typeDScheduledTransfer.setCreatedDate(now);
-	typeDScheduledTransfer.setScheduledDate(scheduledDate);
+	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
+		"12345-6", "12345-6", 120001000, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }

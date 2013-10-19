@@ -6,25 +6,25 @@ import org.junit.Test;
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
 
 public class ScheduledTransferTest {
-    
-    @Test(expected=InvalidArgumentException.class)
-    public void testSetCreatedDateAfterScheduledDateShouldFail() throws Exception {
+
+    @Test(expected = InvalidArgumentException.class)
+    public void testSetCreatedDateAfterScheduledDateShouldFail()
+	    throws Exception {
 	DateTime scheduledDate = new DateTime();
 	DateTime createdDate = scheduledDate.plusSeconds(1);
-	
-	ScheduledTransfer scheduledTransfer = new ScheduledTransferMock();
-	scheduledTransfer.setScheduledDate(scheduledDate);
-	scheduledTransfer.setCreatedDate(createdDate);
+
+	new ScheduledTransferMock("12345-6", "12345-6", 0, createdDate,
+		scheduledDate);
     }
-    
-    @Test(expected=InvalidArgumentException.class)
-    public void testSetScheduledDateBeforeCreatedDateShouldFail() throws Exception {
+
+    @Test(expected = InvalidArgumentException.class)
+    public void testSetScheduledDateBeforeCreatedDateShouldFail()
+	    throws Exception {
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.minusSeconds(1);
-	
-	ScheduledTransfer scheduledTransfer = new ScheduledTransferMock();
-	scheduledTransfer.setCreatedDate(now);
-	scheduledTransfer.setScheduledDate(scheduledDate);
+
+	new ScheduledTransferMock("12345-6", "12345-6", 0, now,
+		scheduledDate);
     }
 
 }
