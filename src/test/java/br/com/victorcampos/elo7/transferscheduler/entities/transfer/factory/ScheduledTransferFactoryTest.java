@@ -58,7 +58,7 @@ public class ScheduledTransferFactoryTest {
 	int transferAmount = ScheduledTransferFactory
 		.getTransferAmount("10000");
 
-	assertEquals(100000, transferAmount);
+	assertEquals(10000, transferAmount);
     }
 
     @Test(expected = InvalidArgumentException.class)

@@ -70,7 +70,7 @@ public class ScheduledTransferFactory {
 	    throws InvalidArgumentException {
 	if (StringUtils.isNotBlank(transferAmountParameter)
 		&& StringUtils.isNumeric(transferAmountParameter)) {
-	    int transferAmount = Integer.parseInt(transferAmountParameter) * 10;
+	    int transferAmount = Integer.parseInt(transferAmountParameter);
 
 	    return transferAmount;
 	} else {
