@@ -21,12 +21,12 @@ public class TypeDScheduledTransferTest {
 
     @Test
     public void testTypeAFeeCase() throws InvalidArgumentException {
-	int expectedFee = 5000;
+	int expectedFee = 500;
 
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(1);
 	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
-		"12345-6", "12345-6", 100000, now, scheduledDate);
+		"12345-6", "12345-6", 10000, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -34,12 +34,12 @@ public class TypeDScheduledTransferTest {
     @Test
     public void testTypeBFeeCaseWhenScheduledDateIsUnder30DaysFromCreation()
 	    throws InvalidArgumentException {
-	int expectedFee = 10000;
+	int expectedFee = 1000;
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(15);
 	
 	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
-		"12345-6", "12345-6", 25000010, now, scheduledDate);
+		"12345-6", "12345-6", 2500001, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -47,12 +47,12 @@ public class TypeDScheduledTransferTest {
     @Test
     public void testTypeBFeeCaseWhenScheduledDateIsAfter30DaysFromCreation()
 	    throws InvalidArgumentException {
-	int expectedFee = 8000;
+	int expectedFee = 800;
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(31);
 
 	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
-		"12345-6", "12345-6", 25000010, now, scheduledDate);
+		"12345-6", "12345-6", 2500001, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -60,12 +60,12 @@ public class TypeDScheduledTransferTest {
     @Test
     public void testTypeCFeeCase()
 	    throws InvalidArgumentException {
-	int expectedFee = 5160043;
+	int expectedFee = 516004;
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(21);
 	
 	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
-		"12345-6", "12345-6", 120001000, now, scheduledDate);
+		"12345-6", "12345-6", 12000100, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }
@@ -73,12 +73,12 @@ public class TypeDScheduledTransferTest {
     @Test
     public void testTypeCFeeSecondCase()
 	    throws InvalidArgumentException {
-	int expectedFee = 8040067;
+	int expectedFee = 804007;
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.plusDays(15);
 
 	ScheduledTransfer typeDScheduledTransfer = new TypeDScheduledTransfer(
-		"12345-6", "12345-6", 120001000, now, scheduledDate);
+		"12345-6", "12345-6", 12000100, now, scheduledDate);
 
 	assertEquals(expectedFee, typeDScheduledTransfer.calculateFee());
     }

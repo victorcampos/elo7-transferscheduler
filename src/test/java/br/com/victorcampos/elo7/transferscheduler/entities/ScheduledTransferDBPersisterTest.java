@@ -10,6 +10,7 @@ import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
+import br.com.victorcampos.elo7.transferscheduler.entities.ScheduledTransferDBPersister;
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.ScheduledTransfer;
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeAScheduledTransfer;
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeBScheduledTransfer;

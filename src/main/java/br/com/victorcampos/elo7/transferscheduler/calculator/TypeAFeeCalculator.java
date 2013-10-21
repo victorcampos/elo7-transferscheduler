@@ -14,11 +14,11 @@ public class TypeAFeeCalculator implements FeeCalculable {
 	// round it down?
 	int calculatedFee = (int) (getTransferAmount() * 0.03) + 2000;
 
-	return calculatedFee;
+	return Math.round(calculatedFee / 10.0f);
     }
 
     public int getTransferAmount() {
-	return transferAmount;
+	return transferAmount * 10;
     }
 
 }

@@ -4,26 +4,20 @@ import org.joda.time.DateTime;
 
 public class TypeBFeeCalculator implements FeeCalculable {
 
-    private final int transferAmount;
     private final DateTime createdDate;
     private final DateTime scheduledDate;
 
-    public TypeBFeeCalculator(int transferAmount, DateTime createdDate,
+    public TypeBFeeCalculator(DateTime createdDate,
 	    DateTime scheduledDate) {
-	this.transferAmount = transferAmount;
 	this.createdDate = createdDate;
 	this.scheduledDate = scheduledDate;
     }
 
     public int calculateFee() {
 	if (getScheduledDate().isAfter(getCreatedDate().plusDays(30)))
-	    return 8000;
+	    return 800;
 	else
-	    return 10000;
-    }
-
-    public int getTransferAmount() {
-	return transferAmount;
+	    return 1000;
     }
 
     public DateTime getCreatedDate() {

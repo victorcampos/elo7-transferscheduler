@@ -16,28 +16,28 @@ public class TypeCFeeCalculator implements FeeCalculable {
     }
 
     public int calculateFee() {
-	double feeRatio = 0;
+	float feeRatio = 0;
 
 	if (getScheduledDate().isAfter(getCreatedDate().plusDays(30)))
-	    feeRatio = 0.012;
+	    feeRatio = 0.012f;
 	else if (getScheduledDate().isAfter(getCreatedDate().plusDays(25)))
-	    feeRatio = 0.021;
+	    feeRatio = 0.021f;
 	else if (getScheduledDate().isAfter(getCreatedDate().plusDays(20)))
-	    feeRatio = 0.043;
+	    feeRatio = 0.043f;
 	else if (getScheduledDate().isAfter(getCreatedDate().plusDays(15)))
-	    feeRatio = 0.054;
+	    feeRatio = 0.054f;
 	else if (getScheduledDate().isAfter(getCreatedDate().plusDays(10)))
-	    feeRatio = 0.067;
+	    feeRatio = 0.067f;
 	else if (getScheduledDate().isAfter(getCreatedDate().plusDays(5)))
-	    feeRatio = 0.074;
+	    feeRatio = 0.074f;
 	else
-	    feeRatio = 0.083;
+	    feeRatio = 0.083f;
 
-	return (int) (getTransferAmount() * feeRatio);
+	return Math.round((getTransferAmount() * feeRatio) / 10.0f);
     }
 
     public int getTransferAmount() {
-	return transferAmount;
+	return transferAmount * 10;
     }
 
     public DateTime getCreatedDate() {

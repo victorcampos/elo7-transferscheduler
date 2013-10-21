@@ -29,11 +29,11 @@ public class TypeDScheduledTransfer extends ScheduledTransfer {
     public int calculateFee() {
 	FeeCalculable feeCalculator;
 
-	if (getTransferAmount() <= 25000000) {
+	if (getTransferAmount() <= 2500000) {
 	    feeCalculator = new TypeAFeeCalculator(getTransferAmount());
-	} else if (getTransferAmount() <= 120000000) {
-	    feeCalculator = new TypeBFeeCalculator(getTransferAmount(),
-		    getCreatedDate(), getScheduledDate());
+	} else if (getTransferAmount() <= 12000000) {
+	    feeCalculator = new TypeBFeeCalculator(getCreatedDate(),
+		    getScheduledDate());
 	} else {
 	    feeCalculator = new TypeCFeeCalculator(getTransferAmount(),
 		    getCreatedDate(), getScheduledDate());

@@ -26,7 +26,7 @@ public class TypeBScheduledTransfer extends ScheduledTransfer {
     @Override
     public int calculateFee() {
 	FeeCalculable typeBFeeCalculator = new TypeBFeeCalculator(
-		getTransferAmount(), getCreatedDate(), getScheduledDate());
+		getCreatedDate(), getScheduledDate());
 
 	return typeBFeeCalculator.calculateFee();
     }
