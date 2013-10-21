@@ -37,7 +37,7 @@ public class ScheduledTransferResource extends ServerResource {
 	setPersister(new ScheduledTransferDBPersister(
 		TransferSchedulerApp.getDatabase()));
     }
-    
+
     public ScheduledTransferResource(ScheduledTransferDBPersister persister) {
 	setPersister(persister);
     }
@@ -62,13 +62,36 @@ public class ScheduledTransferResource extends ServerResource {
     }
 
     @Get("json")
-    public String list() {
+    public String handleGet() {
 	ScheduledTransferDBPersister persister = getPersister();
 
+	String jsonRepresentation = null;
+	String uuid = getQueryValue("uuid");
+
+	jsonRepresentation = (uuid != null) ? getSingleScheduledTransfer(uuid,
+		persister) : listAllScheduledTransfers(persister);
+
+	return jsonRepresentation;
+    }
+
+    private String listAllScheduledTransfers(
+	    ScheduledTransferDBPersister persister) {
 	GsonBuilder gson = new GsonBuilder();
 	gson.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter());
 
 	String jsonRepresentation = gson.create().toJson(persister.list());
+
+	return jsonRepresentation;
+    }
+
+    private String getSingleScheduledTransfer(String uuid,
+	    ScheduledTransferDBPersister persister) {
+	ScheduledTransfer scheduledTransfer = persister.get(uuid);
+
+	GsonBuilder gson = new GsonBuilder();
+	gson.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter());
+
+	String jsonRepresentation = gson.create().toJson(scheduledTransfer);
 
 	return jsonRepresentation;
     }
