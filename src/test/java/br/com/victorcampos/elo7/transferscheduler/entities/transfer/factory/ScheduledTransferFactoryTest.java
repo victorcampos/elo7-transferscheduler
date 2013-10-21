@@ -49,7 +49,7 @@ public class ScheduledTransferFactoryTest {
 	assertEquals(2013, scheduledTransfer.getScheduledDate().getYear());
 	assertEquals(10, scheduledTransfer.getScheduledDate().getMonthOfYear());
 	assertEquals(30, scheduledTransfer.getScheduledDate().getDayOfMonth());
-	assertEquals(100000, scheduledTransfer.getTransferAmount());
+	assertEquals(10000, scheduledTransfer.getTransferAmount());
 	assertEquals("A", scheduledTransfer.getType());
     }
 
