@@ -37,4 +37,5 @@ Requirements
 Design decisions
 ----------------
 
-Transfer amount is set as an integer with 10e-3 precision to handle integer conversions from double when using percentages.
+Transfer amount is set as an integer with 10e-2 precision.
+When calculating fees which relies on percentages it's converted to a 10e-3 precision and the resulting fee is rounded with Math.round().
