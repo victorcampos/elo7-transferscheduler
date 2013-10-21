@@ -7,6 +7,8 @@ import br.com.victorcampos.elo7.transferscheduler.calculator.FeeCalculable;
 import br.com.victorcampos.elo7.transferscheduler.calculator.TypeCFeeCalculator;
 
 public class TypeCScheduledTransfer extends ScheduledTransfer {
+    
+    private static final long serialVersionUID = 6818216401691064198L;
 
     public TypeCScheduledTransfer(String originAccount,
 	    String destinationAccount, int transferAmount,

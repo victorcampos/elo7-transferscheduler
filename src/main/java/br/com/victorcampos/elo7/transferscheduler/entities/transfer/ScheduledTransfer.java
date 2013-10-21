@@ -1,12 +1,16 @@
 package br.com.victorcampos.elo7.transferscheduler.entities.transfer;
 
+import java.io.Serializable;
+
 import org.joda.time.DateTime;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
 import br.com.victorcampos.elo7.transferscheduler.helpers.ScheduledTransferValidator;
 
-public abstract class ScheduledTransfer {
+public abstract class ScheduledTransfer implements Serializable {
 
+    private static final long serialVersionUID = 2494135117769099151L;
+    
     private String uuid;
     private String originAccount;
     private String destinationAccount;
