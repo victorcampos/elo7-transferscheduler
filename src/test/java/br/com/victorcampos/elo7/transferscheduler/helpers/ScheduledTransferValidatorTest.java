@@ -24,23 +24,86 @@ public class ScheduledTransferValidatorTest {
     }
 
     @Test
-    public void testCreatedDateAfterScheduledDateIsInvalid() {
-	DateTime scheduledDate = new DateTime();
-	DateTime createdDate = scheduledDate.plusSeconds(1);
+    public void testIsValidCreatedDateWhenScheduledDateIsNull() {
+	DateTime createdDate = new DateTime();
 
-	assertFalse(ScheduledTransferValidator
-		.isValidPeriodBetweenCreatedAndScheduledDates(createdDate,
-			scheduledDate));
+	assertTrue(ScheduledTransferValidator.isValidCreatedDate(createdDate,
+		null));
     }
 
     @Test
-    public void testScheduledDateBeforeCreatedDateIsInvalid() {
-	DateTime now = new DateTime();
-	DateTime scheduledDate = now.minusSeconds(1);
+    public void testIsValidCreatedDateWhenCreatedDateIsBeforeScheduledDate() {
+	DateTime createdDate = new DateTime();
+	DateTime scheduledDate = createdDate.plusSeconds(1);
 
-	assertFalse(ScheduledTransferValidator
-		.isValidPeriodBetweenCreatedAndScheduledDates(now,
-			scheduledDate));
+	assertTrue(ScheduledTransferValidator.isValidCreatedDate(createdDate,
+		scheduledDate));
+    }
+
+    @Test
+    public void testIsInvalidCreatedDateWhenCreatedDateIsAfterScheduledDate() {
+	DateTime scheduledDate = new DateTime();
+	DateTime createdDate = scheduledDate.plusSeconds(1);
+
+	assertFalse(ScheduledTransferValidator.isValidCreatedDate(createdDate,
+		scheduledDate));
+    }
+
+    @Test
+    public void testIsInvalidCreatedDateWhenNull() {
+	DateTime scheduledDate = new DateTime();
+
+	assertFalse(ScheduledTransferValidator.isValidCreatedDate(null,
+		scheduledDate));
+    }
+
+    @Test
+    public void testIsValidScheduledDateWhenCreatedDateIsNull() {
+	DateTime scheduledDate = new DateTime();
+
+	assertTrue(ScheduledTransferValidator.isValidScheduledDate(null,
+		scheduledDate));
+    }
+
+    @Test
+    public void testIsValidScheduledDateWhenScheduledDateIsAfterCreatedDate() {
+	DateTime createdDate = new DateTime();
+	DateTime scheduledDate = createdDate.plusSeconds(1);
+
+	assertTrue(ScheduledTransferValidator.isValidScheduledDate(createdDate,
+		scheduledDate));
+    }
+
+    @Test
+    public void testIsInvalidScheduledDateWhenScheduledDateIsBeforeCreatedDate() {
+	DateTime scheduledDate = new DateTime();
+	DateTime createdDate = scheduledDate.plusSeconds(1);
+
+	assertFalse(ScheduledTransferValidator.isValidScheduledDate(
+		createdDate, scheduledDate));
+    }
+
+    @Test
+    public void testIsInvalidScheduledDateWhenNull() {
+	DateTime createdDate = new DateTime();
+
+	assertFalse(ScheduledTransferValidator.isValidScheduledDate(
+		createdDate, null));
+    }
+
+    @Test
+    public void isValidTransferAmountWhenGreaterThanZero() {
+	assertTrue(ScheduledTransferValidator.isValidTransferAmount(1));
+    }
+    
+    @Test
+    public void isInvalidTransferAmountWhenEqualToZero() {
+	assertFalse(ScheduledTransferValidator.isValidTransferAmount(0));
+    }
+    
+    @Test
+    public void isInvalidTransferAmountWhenLessThanZero() {
+	assertFalse(ScheduledTransferValidator.isValidTransferAmount(-1));
     }
 
 }

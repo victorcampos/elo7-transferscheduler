@@ -29,7 +29,7 @@ public abstract class ScheduledTransfer implements Serializable {
 	setOriginAccount(originAccount);
 	setDestinationAccount(destinationAccount);
 
-	this.transferAmount = transferAmount;
+	setTransferAmount(transferAmount);
 
 	setCreatedDate(createdDate);
 	setScheduledDate(scheduledDate);
@@ -75,8 +75,14 @@ public abstract class ScheduledTransfer implements Serializable {
 	return transferAmount;
     }
 
-    public void setTransferAmount(int transferAmount) {
-	this.transferAmount = transferAmount;
+    public void setTransferAmount(int transferAmount)
+	    throws InvalidArgumentException {
+	if (ScheduledTransferValidator.isValidTransferAmount(transferAmount)) {
+	    this.transferAmount = transferAmount;
+	} else {
+	    throw new InvalidArgumentException(
+		    "Transfer amount should be greater than zero");
+	}
     }
 
     public DateTime getCreatedDate() {
@@ -86,9 +92,8 @@ public abstract class ScheduledTransfer implements Serializable {
     public void setCreatedDate(DateTime createdDate)
 	    throws InvalidArgumentException {
 	if (getScheduledDate() != null && createdDate != null) {
-	    if (!ScheduledTransferValidator
-		    .isValidPeriodBetweenCreatedAndScheduledDates(createdDate,
-			    getScheduledDate()))
+	    if (!ScheduledTransferValidator.isValidCreatedDate(createdDate,
+		    getScheduledDate()))
 		throw new InvalidArgumentException(
 			"Created date should be before scheduled date");
 
@@ -105,9 +110,8 @@ public abstract class ScheduledTransfer implements Serializable {
     public void setScheduledDate(DateTime scheduledDate)
 	    throws InvalidArgumentException {
 	if (getCreatedDate() != null && scheduledDate != null) {
-	    if (!ScheduledTransferValidator
-		    .isValidPeriodBetweenCreatedAndScheduledDates(
-			    getCreatedDate(), scheduledDate))
+	    if (!ScheduledTransferValidator.isValidScheduledDate(
+		    getCreatedDate(), scheduledDate))
 		throw new InvalidArgumentException(
 			"Scheduled date should be after created date");
 

@@ -1,11 +1,12 @@
 package br.com.victorcampos.elo7.transferscheduler.entities.transfer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
-
-import static org.junit.Assert.*;
 
 public class ScheduledTransferTest {
 
@@ -15,7 +16,7 @@ public class ScheduledTransferTest {
 	DateTime scheduledDate = new DateTime();
 	DateTime createdDate = scheduledDate.plusSeconds(1);
 
-	new ScheduledTransferMock("12345-6", "12345-6", 0, createdDate,
+	new ScheduledTransferMock("12345-6", "12345-6", 1, createdDate,
 		scheduledDate);
     }
 
@@ -26,7 +27,7 @@ public class ScheduledTransferTest {
 	DateTime createdDate = scheduledDate.plusSeconds(1);
 
 	try {
-	    new ScheduledTransferMock("12345-6", "12345-6", 0, createdDate,
+	    new ScheduledTransferMock("12345-6", "12345-6", 1, createdDate,
 		    scheduledDate);
 	} catch (InvalidArgumentException e) {
 	    assertEquals("Scheduled date should be after created date",
@@ -40,7 +41,7 @@ public class ScheduledTransferTest {
 	DateTime now = new DateTime();
 	DateTime scheduledDate = now.minusSeconds(1);
 
-	new ScheduledTransferMock("12345-6", "12345-6", 0, now, scheduledDate);
+	new ScheduledTransferMock("12345-6", "12345-6", 1, now, scheduledDate);
     }
 
     @Test
@@ -50,7 +51,7 @@ public class ScheduledTransferTest {
 	DateTime createdDate = scheduledDate.minusSeconds(1);
 
 	ScheduledTransfer scheduledTransfer = new ScheduledTransferMock(
-		"12345-6", "12345-6", 0, createdDate, scheduledDate);
+		"12345-6", "12345-6", 1, createdDate, scheduledDate);
 
 	try {
 	    scheduledTransfer.setCreatedDate(scheduledDate.plusSeconds(1));
@@ -67,7 +68,7 @@ public class ScheduledTransferTest {
 	DateTime createdDate = scheduledDate.minusSeconds(1);
 
 	try {
-	    new ScheduledTransferMock("1234-6", "12345-6", 0, createdDate,
+	    new ScheduledTransferMock("1234-6", "12345-6", 1, createdDate,
 		    scheduledDate);
 	} catch (InvalidArgumentException e) {
 	    assertEquals("Invalid origin account format, expected XXXXX-X",
@@ -82,11 +83,28 @@ public class ScheduledTransferTest {
 	DateTime createdDate = scheduledDate.minusSeconds(1);
 
 	try {
-	    new ScheduledTransferMock("12345-6", "1234-6", 0, createdDate,
+	    new ScheduledTransferMock("12345-6", "1234-6", 1, createdDate,
 		    scheduledDate);
 	} catch (InvalidArgumentException e) {
 	    assertEquals(
 		    "Invalid destination account format, expected XXXXX-X",
+		    e.getMessage());
+	}
+    }
+    
+    @Test
+    public void testInvalidTransferAmountShouldFailAndGiveMessage()
+	    throws Exception {
+	DateTime scheduledDate = new DateTime();
+	DateTime createdDate = scheduledDate.minusSeconds(1);
+
+	try {
+	    new ScheduledTransferMock("12345-6", "12345-6", 0, createdDate,
+		    scheduledDate);
+	    fail("Should have thrown exception");
+	} catch (InvalidArgumentException e) {
+	    assertEquals(
+		    "Transfer amount should be greater than zero",
 		    e.getMessage());
 	}
     }
