@@ -10,7 +10,7 @@ import br.com.victorcampos.elo7.transferscheduler.helpers.ScheduledTransferValid
 public abstract class ScheduledTransfer implements Serializable {
 
     private static final long serialVersionUID = 2494135117769099151L;
-    
+
     private String uuid;
     private String originAccount;
     private String destinationAccount;
@@ -24,12 +24,13 @@ public abstract class ScheduledTransfer implements Serializable {
     public abstract int calculateFee();
 
     public ScheduledTransfer(String originAccount, String destinationAccount,
-	    int transferAmount, DateTime createdDate, DateTime scheduledDate) throws InvalidArgumentException {
+	    int transferAmount, DateTime createdDate, DateTime scheduledDate)
+	    throws InvalidArgumentException {
 	setOriginAccount(originAccount);
 	setDestinationAccount(destinationAccount);
-	
+
 	this.transferAmount = transferAmount;
-	
+
 	setCreatedDate(createdDate);
 	setScheduledDate(scheduledDate);
     }
@@ -51,7 +52,8 @@ public abstract class ScheduledTransfer implements Serializable {
 	if (ScheduledTransferValidator.isValidFormat(originAccount)) {
 	    this.originAccount = originAccount;
 	} else {
-	    throw new InvalidArgumentException();
+	    throw new InvalidArgumentException(
+		    "Invalid origin account format, expected XXXXX-X");
 	}
     }
 
@@ -64,7 +66,8 @@ public abstract class ScheduledTransfer implements Serializable {
 	if (ScheduledTransferValidator.isValidFormat(destinationAccount)) {
 	    this.destinationAccount = destinationAccount;
 	} else {
-	    throw new InvalidArgumentException();
+	    throw new InvalidArgumentException(
+		    "Invalid destination account format, expected XXXXX-X");
 	}
     }
 
@@ -83,9 +86,11 @@ public abstract class ScheduledTransfer implements Serializable {
     public void setCreatedDate(DateTime createdDate)
 	    throws InvalidArgumentException {
 	if (getScheduledDate() != null && createdDate != null) {
-	    if (!ScheduledTransferValidator.isValidPeriodBetweenCreatedAndScheduledDates(createdDate,
-		    getScheduledDate()))
-		throw new InvalidArgumentException();
+	    if (!ScheduledTransferValidator
+		    .isValidPeriodBetweenCreatedAndScheduledDates(createdDate,
+			    getScheduledDate()))
+		throw new InvalidArgumentException(
+			"Created date should be before scheduled date");
 
 	    this.createdDate = createdDate;
 	} else if (createdDate != null) {
@@ -100,9 +105,11 @@ public abstract class ScheduledTransfer implements Serializable {
     public void setScheduledDate(DateTime scheduledDate)
 	    throws InvalidArgumentException {
 	if (getCreatedDate() != null && scheduledDate != null) {
-	    if (!ScheduledTransferValidator.isValidPeriodBetweenCreatedAndScheduledDates(getCreatedDate(),
-		    scheduledDate))
-		throw new InvalidArgumentException();
+	    if (!ScheduledTransferValidator
+		    .isValidPeriodBetweenCreatedAndScheduledDates(
+			    getCreatedDate(), scheduledDate))
+		throw new InvalidArgumentException(
+			"Scheduled date should be after created date");
 
 	    this.scheduledDate = scheduledDate;
 	} else if (scheduledDate != null) {

@@ -107,10 +107,9 @@ public class ScheduledTransferResource extends ServerResource {
 	    scheduledTransfer = ScheduledTransferFactory
 		    .buildFromPostData(form);
 	} catch (InvalidArgumentException e) {
-	    // TODO: refactor error/exception/validation system to return a more
-	    // informative error message
 	    getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-	    return getErrorRepresentation("Error creating new scheduled transfer");
+	    return getErrorRepresentation(
+		    "Error creating new scheduled transfer", e.getMessage());
 	}
 
 	scheduledTransfer = persister.save(scheduledTransfer);
@@ -121,9 +120,11 @@ public class ScheduledTransferResource extends ServerResource {
 	return gson.create().toJson(scheduledTransfer);
     }
 
-    private String getErrorRepresentation(String errorMessage) {
+    private String getErrorRepresentation(String errorMessage,
+	    String description) {
 	Map<String, String> errorMap = new HashMap<String, String>();
 	errorMap.put("error", errorMessage);
+	errorMap.put("description", description);
 
 	return new Gson().toJson(errorMap);
     }

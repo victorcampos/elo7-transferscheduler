@@ -61,6 +61,16 @@
 			<artifactId>mapdb</artifactId>
 			<version>0.9.6</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -69,10 +79,5 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- /Test dependencies -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
-		</dependency>
 	</dependencies>
 </project>
