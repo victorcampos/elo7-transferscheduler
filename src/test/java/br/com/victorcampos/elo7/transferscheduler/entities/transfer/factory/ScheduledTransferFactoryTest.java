@@ -1,6 +1,7 @@
 package br.com.victorcampos.elo7.transferscheduler.entities.transfer.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
@@ -9,6 +10,10 @@ import org.restlet.data.Form;
 
 import br.com.victorcampos.elo7.transferscheduler.InvalidArgumentException;
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.ScheduledTransfer;
+import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeAScheduledTransfer;
+import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeBScheduledTransfer;
+import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeCScheduledTransfer;
+import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeDScheduledTransfer;
 
 public class ScheduledTransferFactoryTest {
 
@@ -83,7 +88,7 @@ public class ScheduledTransferFactoryTest {
 
 	assertEquals("A", scheduledTransfer.getType());
     }
-    
+
     @Test
     public void testBuildTransferForOperationTypeB()
 	    throws InvalidArgumentException {
@@ -100,7 +105,7 @@ public class ScheduledTransferFactoryTest {
 
 	assertEquals("B", scheduledTransfer.getType());
     }
-    
+
     @Test
     public void testBuildTransferForOperationTypeC()
 	    throws InvalidArgumentException {
@@ -117,7 +122,7 @@ public class ScheduledTransferFactoryTest {
 
 	assertEquals("C", scheduledTransfer.getType());
     }
-    
+
     @Test
     public void testBuildTransferForOperationTypeD()
 	    throws InvalidArgumentException {
@@ -133,6 +138,61 @@ public class ScheduledTransferFactoryTest {
 			operationType);
 
 	assertEquals("D", scheduledTransfer.getType());
+    }
+
+    @Test
+    public void testBuildInvalidTransferOperationTypeShouldFailAndGiveMessage() {
+	String originAccount = "12345-6";
+	String destinationAccount = "23456-7";
+	DateTime scheduledDate = new DateTime().plusDays(10);
+	int transferAmount = 100000;
+	String operationType = "E";
+
+	try {
+	    ScheduledTransferFactory.buildTransferForOperationType(
+		    originAccount, destinationAccount, scheduledDate,
+		    transferAmount, operationType);
+	    fail("Should have thrown an exception");
+	} catch (InvalidArgumentException e) {
+	    assertEquals("Invalid operation type, should be in [A, B, C, D]",
+		    e.getMessage());
+	}
+
+    }
+
+    @Test
+    public void testOperationTypesEnumShouldReturnClassForOperationTypeA() {
+	Class<?> scheduledTransferClass = ScheduledTransferFactory.OperationTypes
+		.getScheduledTransferForOperationType("A");
+	assertEquals(TypeAScheduledTransfer.class, scheduledTransferClass);
+    }
+    
+    @Test
+    public void testOperationTypesEnumShouldReturnClassForOperationTypeB() {
+	Class<?> scheduledTransferClass = ScheduledTransferFactory.OperationTypes
+		.getScheduledTransferForOperationType("B");
+	assertEquals(TypeBScheduledTransfer.class, scheduledTransferClass);
+    }
+    
+    @Test
+    public void testOperationTypesEnumShouldReturnClassForOperationTypeC() {
+	Class<?> scheduledTransferClass = ScheduledTransferFactory.OperationTypes
+		.getScheduledTransferForOperationType("C");
+	assertEquals(TypeCScheduledTransfer.class, scheduledTransferClass);
+    }
+    
+    @Test
+    public void testOperationTypesEnumShouldReturnClassForOperationTypeD() {
+	Class<?> scheduledTransferClass = ScheduledTransferFactory.OperationTypes
+		.getScheduledTransferForOperationType("D");
+	assertEquals(TypeDScheduledTransfer.class, scheduledTransferClass);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testOperationTypesEnumShouldFailForInvalidOperationType() {
+	Class<?> scheduledTransferClass = ScheduledTransferFactory.OperationTypes
+		.getScheduledTransferForOperationType("X");
+	assertEquals(TypeDScheduledTransfer.class, scheduledTransferClass);
     }
 
 }

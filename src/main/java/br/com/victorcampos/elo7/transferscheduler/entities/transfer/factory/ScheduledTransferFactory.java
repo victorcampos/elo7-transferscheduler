@@ -1,5 +1,7 @@
 package br.com.victorcampos.elo7.transferscheduler.entities.transfer.factory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,9 +18,24 @@ import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeASchedul
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeBScheduledTransfer;
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeCScheduledTransfer;
 import br.com.victorcampos.elo7.transferscheduler.entities.transfer.TypeDScheduledTransfer;
-import br.com.victorcampos.elo7.transferscheduler.helpers.ScheduledTransferValidator;
 
 public class ScheduledTransferFactory {
+
+    public enum OperationTypes {
+	A(TypeAScheduledTransfer.class), B(TypeBScheduledTransfer.class), C(
+		TypeCScheduledTransfer.class), D(TypeDScheduledTransfer.class);
+
+	private Class<? extends ScheduledTransfer> clazz;
+
+	OperationTypes(Class<? extends ScheduledTransfer> scheduleTransferClass) {
+	    this.clazz = scheduleTransferClass;
+	}
+
+	public static Class<? extends ScheduledTransfer> getScheduledTransferForOperationType(
+		String type) {
+	    return valueOf(type).clazz;
+	}
+    }
 
     // TODO: Refactor to an Enum when needed
     private static final Set<String> TYPES = new HashSet<String>(
@@ -46,14 +63,25 @@ public class ScheduledTransferFactory {
 	int transferAmount = getTransferAmount(transferAmountParameter);
 
 	ScheduledTransfer scheduledTransfer;
-	if (ScheduledTransferValidator.isValidFormat(originAccount)
-		&& ScheduledTransferValidator.isValidFormat(destinationAccount)
-		&& TYPES.contains(operationType) && transferAmount > 0) {
-	    scheduledTransfer = buildTransferForOperationType(originAccount,
-		    destinationAccount, scheduledDate, transferAmount,
-		    operationType);
-	} else {
-	    throw new InvalidArgumentException();
+	try {
+	    scheduledTransfer = buildTransferForOperationType(
+	    	originAccount, destinationAccount, scheduledDate,
+	    	transferAmount, operationType);
+	} catch (NoSuchMethodException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (SecurityException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (InstantiationException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (IllegalAccessException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (InvocationTargetException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
 
 	return scheduledTransfer;
@@ -83,33 +111,25 @@ public class ScheduledTransferFactory {
     public static ScheduledTransfer buildTransferForOperationType(
 	    String originAccount, String destinationAccount,
 	    DateTime scheduledDate, int transferAmount, String operationType)
-	    throws InvalidArgumentException {
+	    throws InvalidArgumentException, NoSuchMethodException,
+	    SecurityException, InstantiationException, IllegalAccessException,
+	    InvocationTargetException {
 	ScheduledTransfer scheduledTransfer;
 	DateTime now = new DateTime();
-	
-	switch (operationType) {
-	case "A":
-	    scheduledTransfer = new TypeAScheduledTransfer(originAccount,
-		    destinationAccount, transferAmount, now, scheduledDate);
-	    break;
-	case "B":
-	    scheduledTransfer = new TypeBScheduledTransfer(originAccount,
-		    destinationAccount, transferAmount, now, scheduledDate);
-	    break;
-	case "C":
-	    scheduledTransfer = new TypeCScheduledTransfer(originAccount,
-		    destinationAccount, transferAmount, now, scheduledDate);
-	    break;
-	case "D":
-	    scheduledTransfer = new TypeDScheduledTransfer(originAccount,
-		    destinationAccount, transferAmount, now, scheduledDate);
-	    break;
-	default:
-	    scheduledTransfer = null;
-	    break;
+
+	try {
+	    Class<? extends ScheduledTransfer> scheduledTransferForOperationType = OperationTypes
+		    .getScheduledTransferForOperationType(operationType);
+	    Constructor<? extends ScheduledTransfer> constructor = scheduledTransferForOperationType
+		    .getConstructor(String.class, String.class, Integer.class,
+			    DateTime.class, DateTime.class);
+	    scheduledTransfer = constructor.newInstance(originAccount, destinationAccount,
+		    transferAmount, now, scheduledDate);
+	} catch (IllegalArgumentException e) {
+	    throw new InvalidArgumentException(
+		    "Invalid operation type, should be in [A, B, C, D]");
 	}
 
 	return scheduledTransfer;
     }
-
 }
